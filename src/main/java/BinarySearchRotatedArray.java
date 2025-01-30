@@ -8,13 +8,34 @@ public class BinarySearchRotatedArray {
      * @return               The index of the target value if found, -1 otherwise
      */
     public int search(int[] arr, int target, int rotationIndex){
-        //TODO
         /*
          * You have to check if the rotatedIndex is 0,
          * that means the array is not rotated at all or
          * the smallest index is at position 0.(remember the array is sorted)
          */
-        
+        if (arr == null || arr.length == 0) {
+            return -1;
+        }
+
+        if (rotationIndex == 0) {
+            return binarySearch(arr, 0, arr.length - 1, target);
+        }
+
+        int lowRight = rotationIndex;
+        int highRight = arr.length - 1;
+        int indexRight = binarySearch(arr, lowRight, highRight, target);
+        if (indexRight != -1) {
+            return indexRight;
+        }
+
+        int lowLeft = 0;
+        int highLeft = rotationIndex - 1;
+        int indexLeft = binarySearch(arr, lowLeft, highLeft, target);
+        if (indexLeft != -1) {
+            return indexLeft;
+        }
+
+        return -1;
     }
 
     /**
@@ -27,8 +48,16 @@ public class BinarySearchRotatedArray {
      * @return        The index of the target value if found, -1 otherwise
      */
     private int binarySearch(int[] arr, int left, int right, int target){
-        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
         return -1;
-        
     }
 }
